@@ -1,20 +1,25 @@
 ---
 title: "TDOR vignette"
 author: "Paul Brennan"
-date: "17/11/2018"
-output: html_document
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-At the moment, this needs to be brought in locally. 
-If data put in package, this won't be necessary
-```{r read_in_data, warning=FALSE}
-library(tidyverse)
-setwd("/Users/paulbrennan/Documents/TDOR_data_et_al/tdor_data_20181117")
-data <- read_csv("tdor_data_20181117.csv")
+Load required packages.
+```{r load_package, warning=FALSE}
+library(gganimate)
+libary(ggplot2)
+library(ggthemes)
+library(maps)
+library(tdor)
 ```
 
 ## A set of code and graphs to illustrate the data in this package
@@ -22,46 +27,37 @@ data <- read_csv("tdor_data_20181117.csv")
 
 The data can be explored through this website: [https://tdor.translivesmatter.info/]
 
-```{r adding_date_format, warning=FALSE}
-library(lubridate)
-data$Date <- dmy(data$Date)
-data$year <- year(data$Date)
-```
-
 ## Plot reported deaths across the years
 ```{r deaths_over_year, warning=FALSE}
-ggplot(data, aes(year)) + geom_bar() +
+ggplot(tdor, aes(Year)) + geom_bar() +
     ggtitle("Deaths by year")
 ```
 
 
 
-## Plot deaths by years
-```{r deaths_by_age, warning=FALSE}
-library(tidyr)
-# separate Age as some have a range
-data_a <- separate(data, Age, into = c("Age", "Age_high"))
-# turn into numeric
-data_a$Age <- as.numeric(data_a$Age)
+## Plot deaths by age
 
-data_a %>% 
-  filter(Age>0) %>%
-  ggplot(aes(Age)) + geom_bar() +
+In some cases there is ambiguity over the age, so we have a minimum and a maximum. 
+
+```{r deaths_by_age, warning=FALSE}
+tdor %>% 
+  filter(Age_min > 0 & Age_max > 0) %>%
+  ggplot(aes(Age = (Age_min + Age_max)/2) + 
+  geom_bar() +
   ggtitle("Deaths by age") +
   labs(y = "Deaths")
 
-data_a %>% 
-  filter(Age>0) %>%
-  ggplot(aes(Age)) + geom_histogram(binwidth = 5) +
+tdor %>% 
+  filter(Age_min > 0 & Age_max > 0) %>%
+  ggplot(aes(Age = (Age_min + Age_max)/2) +
+  geom_histogram(binwidth = 5) +
   ggtitle("Deaths by age") +
   labs(y = "Deaths")
 ```
 
-
-
 ## Show top 10 countries for deaths
 ```{r deaths_by_country}
-data %>%
+tdor %>%
   group_by(Country) %>%
   summarise(n = n()) %>%
   arrange(desc(n)) -> by_country
@@ -76,19 +72,14 @@ ggplot(by_country[1:10,],
   ggtitle("Ten countries with the most reported deaths")
 ```
 
-
-
 ```{r world_map, warning=FALSE}
-library(maps)
-library(ggthemes)
-
 world <- ggplot() +
   borders("world", colour = "gray85", fill = "gray80") +
   theme_map() 
 
 map <- world +
   geom_point(aes(x = Longitude, y = Latitude),
-             data = data, 
+             data = tdor, 
              colour = 'purple', alpha = .2) +
   ggtitle("Map of deaths (2006-2018)")
 
@@ -99,8 +90,8 @@ map
 ### Code to animate 2018 data
 Animate by name 
 ```{r world_map_animation, eval = FALSE}
-library(gganimate)
-d18 <- filter(data_a, year == 2018)
+
+d18 <- filter(tdor, Year == 2018)
 
 map_anim_name <- world +
   geom_point(aes(x = Longitude, y = Latitude),
