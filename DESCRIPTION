@@ -17,6 +17,11 @@ LazyData: true
 Depends: R (>= 2.10)
 RoxygenNote: 6.1.1
 Suggests: 
+    dplyr,
     knitr,
+    gganimate,
+    ggplot2,
+    ggthemes,
+    maps,
     rmarkdown
 VignetteBuilder: knitr

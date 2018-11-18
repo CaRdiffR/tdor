@@ -28,7 +28,7 @@ tdor <-
   separate(Age, into = c("Age_min", "Age_max"), sep = "-", remove = FALSE) %>%
   mutate(Age_min = ifelse(!is.na(as.numeric(Age_min)), as.numeric(Age_min),
                           as.numeric(sub("(Approx. )", "", Age))),
-         Age_max = ifelse(!is.na(Age_max), Age_max,
+         Age_max = ifelse(!is.na(Age_max), as.numeric(Age_max),
                           as.numeric(sub("(Approx. |Under )", "", Age)))) %>%
   # filter to last complete TDoR period
   mutate(Month = month(Date),
