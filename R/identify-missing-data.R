@@ -2,30 +2,15 @@ library("tidyverse")
 library("ggmap")
 load("~/R/tdor/data/tdor.rda")
 
-missings <- c(
-  sum(is.na(tdor$Name) | tdor$Name == "Name Unknown"),
-  sum(is.na(tdor$Age)),
-  sum(is.na(tdor$Age_min)),
-  sum(is.na(tdor$Age_max)),
-  sum(is.na(tdor$Photo)),
-  sum(is.na(tdor$`Photo source`)),
-  sum(is.na(tdor$Date)),
-  sum(is.na(tdor$`Source ref`)),
-  sum(is.na(tdor$Location)),
-  sum(is.na(tdor$Country)),
-  sum(is.na(tdor$Latitude)),
-  sum(is.na(tdor$Longitude)),
-  sum(is.na(tdor$`Cause of death`)),
-  sum(is.na(tdor$Description)),
-  sum(is.na(tdor$Permalink)),
-  sum(is.na(tdor$`TGEU ref`)),
-  sum(is.na(tdor$Source)),
-  sum(is.na(tdor$Month)),
-  sum(is.na(tdor$Year)),
-  sum(is.na(tdor$TDoR)),
-  sum(is.na(tdor$Date_1))
+# Found some Names that need to be corrected
+tdor <- tdor %>% mutate(
+  Name = if_else(str_detect(Name, "Name Unknown") & Name != "Name Unknown",
+                 str_replace(Name, "Name Unknown", "nn"),
+                 Name)
 )
-missings <- data.frame(colnames(tdor), missings)
+
+missings <- mutate(tdor, Name = if_else(Name != "Name Unknown", Name, NULL))
+missings <- data.frame(colSums(is.na(missings)))
 
 # To improve our data, if you knew any of the following victims' ages, please report this information here:
 # User can maybe drill down by geography to check who is missing age data
@@ -45,7 +30,7 @@ Help_Find_Names <- tdor %>%
   filter(Name == "Name Unknown") %>%
   select(Country, Location, Date_of_Death = Date, Age, Photo, Description)
 
-# To improve our data, if you knew any of the circunstances around the following victims' deaths, please report this information here:
+# To improve our data, if you knew any of the circumstances around the following victims' deaths, please report this information here:
 # User can maybe drill down by geography to check who is missing this data
 Help_Find_Info <- tdor %>%
   filter(is.na(Description) & is.na(Source)) %>%
