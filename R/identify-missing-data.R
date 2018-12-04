@@ -3,12 +3,12 @@ library("ggmap")
 load("~/R/tdor/data/tdor.rda")
 
 # Found some Names that need to be corrected
-tdor <- tdor %>% mutate(
-  Name = if_else(str_detect(Name, "Name Unknown") & Name != "Name Unknown",
-                 str_replace(Name, "Name Unknown", "nn"),
-                 Name)
-)
-
+tdor <- tdor %>% mutate(Name = if_else(
+  str_detect(Name, "Name Unknown") & Name != "Name Unknown",
+  str_replace(Name, "Name Unknown", "nn"),
+  Name
+))
+# Summary of how many missings there are per variable
 missings <- mutate(tdor, Name = if_else(Name != "Name Unknown", Name, NULL))
 missings <- data.frame(colSums(is.na(missings)))
 
