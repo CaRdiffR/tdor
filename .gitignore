@@ -3,3 +3,6 @@ inst/doc
 .Rhistory
 .RData
 .Ruserdata
+tdor.Rcheck/
+tdor*.tar.gz
+tdor*.tgz
