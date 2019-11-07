@@ -114,3 +114,18 @@ animate(map_anim_name, nframes = nrow(d18)*2) +
 ```
 
 
+### Deaths per month, as a line chart
+```{r deaths_pm}
+tdor %>% 
+  select(Date) %>% 
+  mutate(month=lubridate::floor_date(Date, unit = "1 month")) %>% 
+  count(month) %>%
+  right_join(
+    seq.Date(from = as.Date("2006-10-01"), to=as.Date("2018-09-01"), , by="month") %>% 
+  as_tibble() %>% 
+  select(month=value)
+  ) %>% 
+  ggplot()+
+  aes(x=month, y=n)+
+  geom_line()
+```
