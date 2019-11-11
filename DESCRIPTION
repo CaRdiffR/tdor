@@ -22,6 +22,7 @@ Suggests:
     gganimate,
     ggplot2,
     ggthemes,
+    lubridate,
     maps,
     rmarkdown
 VignetteBuilder: knitr
