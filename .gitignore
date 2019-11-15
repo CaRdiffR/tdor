@@ -1,4 +1,8 @@
+inst/doc
 .Rproj.user
 .Rhistory
 .RData
 .Ruserdata
+tdor.Rcheck/
+tdor*.tar.gz
+tdor*.tgz

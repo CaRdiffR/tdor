@@ -1,3 +1,7 @@
+^README\.Rmd$
 ^data-raw$
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^tdor\.Rcheck$
+^tdor.*\.tar\.gz$
+^tdor.*\.tgz$
