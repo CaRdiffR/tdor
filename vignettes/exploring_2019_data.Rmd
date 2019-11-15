@@ -1,0 +1,97 @@
+---
+title: "Explore the 2019 TDoR data"
+author: "Paul Brennan"
+date: "15/11/2019"
+output: html_document
+vignette: >
+  %\VignetteIndexEntry{Exploring 2019 TDoR Data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+[TRIGGER WARNING: VIOLENCE. MURDER]
+
+The data can be explored through this website: [https://tdor.translivesmatter.info/]
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Load required packages.
+```{r load_package, warning=FALSE, message=FALSE}
+library(dplyr)
+library(ggplot2)
+library(ggthemes)
+library(maps)
+library(tdor)
+library(lubridate)
+```
+
+## Some code and graphs to explore the 2019 data
+The TDoR census date goes from 1st of Oct 2018 to 30th of Sep 2019. 
+
+How many deaths have occured in this time?
+```{r deaths_during_2019, warning=FALSE}
+start <- '2018-10-01'
+end <- '2019-09-30'
+tdor %>% 
+  filter(Date > as.Date(start) & Date < as.Date(end)) -> tdor_subset
+```
+
+There were **`r nrow(tdor_subset)`** deaths reported between `r start` and `r end`. 
+
+```{r deaths_per_month, warning=FALSE}
+
+tdor_subset %>% 
+  mutate(yrmth = make_date(Year, Month, 1)) %>% 
+  ggplot(aes(yrmth)) + geom_bar() +
+    labs(title = "Deaths by month", x = "",
+      subtitle = paste("between", start, "and", end),
+      y = "Deaths") +
+    theme_bw()
+```
+
+Where we have ages... what were those ages?
+```{r deaths_by_age, warning=FALSE}
+
+tdor_subset %>%
+  ggplot(aes(x = (Age_min + Age_max)/2)) + 
+  geom_bar() +
+  ggtitle("Deaths by age") +
+  labs(y = "Deaths", x = "Age at death",
+      subtitle = paste("between", start, "and", end)) +
+  theme_bw()
+
+```
+
+## Show top 10 countries for reported deaths
+```{r deaths_by_country}
+tdor_subset %>%
+  group_by(Country) %>%
+  summarise(n = n()) %>%
+  arrange(desc(n)) -> by_country
+
+ggplot(by_country[1:10,],
+  aes(x = Country,
+      y = n)) +
+  theme_bw() +
+  labs(y = "Deaths", x = "") +
+  geom_bar(stat="identity") +
+  theme(axis.text.x = element_text(angle=45, hjust=1)) +
+  labs(title = "Ten countries with the most reported deaths",
+    subtitle = paste("betweeen", start, "and", end))
+```
+
+```{r world_map, warning=FALSE}
+world <- ggplot() +
+  borders("world", colour = "gray85", fill = "gray80") +
+  theme_map() 
+
+map <- world +
+  geom_point(aes(x = Longitude, y = Latitude),
+             data = tdor_subset, 
+             colour = 'purple', alpha = .2) +
+  ggtitle(paste("Map of deaths betweeen", start, "and", end))
+
+map
+```
