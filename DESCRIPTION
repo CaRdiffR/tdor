@@ -1,0 +1,28 @@
+Package: tdor
+Type: Package
+Title: Data for the Transgender Day of Remembrance
+Version: 0.1.0
+Authors@R: c(person("Dave", "Parr",
+          email = "davidrgparr@gmail.com", role = c("aut", "cre"),
+          comment = c(ORCID = "0000-0002-1539-8547")),
+          person("Heather", "Turner", 
+          email = "ht@heatherturner.net", role = c("aut"),
+          comment = c(ORCID = "0000-0002-1256-3375")))
+BugReports: https://github.com/CaRdiffR/tdor/issues          
+Description: Data on killings and suicides of trans people recorded for observance of the Transgender Day of Remembrance, held annually on November 20 <https://en.wikipedia.org/wiki/Transgender_Day_of_Remembrance>.
+    The data are collated from reports by Transgender Europe <https://tdor.tgeu.org/> and trans activists worldwide, as published on <https://tdor.translivesmatter.info/>.
+License: CC0
+Encoding: UTF-8
+LazyData: true
+Depends: R (>= 2.10)
+RoxygenNote: 6.1.1
+Suggests: 
+    dplyr,
+    knitr,
+    gganimate,
+    ggplot2,
+    ggthemes,
+    lubridate,
+    maps,
+    rmarkdown
+VignetteBuilder: knitr

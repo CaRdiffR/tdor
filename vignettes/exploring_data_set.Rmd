@@ -1,0 +1,131 @@
+---
+title: "Exploring the TDoR Data"
+author: "Paul Brennan"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Exploring the TDoR Data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Load required packages.
+```{r load_package, warning=FALSE}
+anim <- require(gganimate)
+library(dplyr)
+library(ggplot2)
+library(ggthemes)
+library(maps)
+library(tdor)
+```
+
+## A set of code and graphs to illustrate the data in this package
+[TRIGGER WARNING: VIOLENCE. MURDER]
+
+The data can be explored through this website: [https://tdor.translivesmatter.info/]
+
+## Plot reported deaths across the years
+```{r deaths_over_year, warning=FALSE}
+ggplot(tdor, aes(Year)) + geom_bar() +
+    ggtitle("Deaths by year")
+```
+
+
+
+## Plot deaths by age
+
+In some cases there is ambiguity over the age, so we have a minimum and a maximum. 
+
+```{r deaths_by_age, warning=FALSE}
+tdor %>% 
+  filter(Age_min > 0 & Age_max > 0) %>%
+  ggplot(aes(x = (Age_min + Age_max)/2)) + 
+  geom_bar() +
+  ggtitle("Deaths by age") +
+  labs(y = "Deaths")
+
+tdor %>% 
+  filter(Age_min > 0 & Age_max > 0) %>%
+  ggplot(aes(x = (Age_min + Age_max)/2)) +
+  geom_histogram(binwidth = 5) +
+  ggtitle("Deaths by age") +
+  labs(y = "Deaths")
+```
+
+## Show top 10 countries for deaths
+```{r deaths_by_country}
+tdor %>%
+  group_by(Country) %>%
+  summarise(n = n()) %>%
+  arrange(desc(n)) -> by_country
+
+ggplot(by_country[1:10,],
+  aes(x = Country,
+      y = n)) +
+  theme_bw() +
+  labs(y = "Deaths", x = "") +
+  geom_bar(stat="identity") +
+  theme(axis.text.x = element_text(angle=45, hjust=1)) +
+  ggtitle("Ten countries with the most reported deaths")
+```
+
+```{r world_map, warning=FALSE}
+world <- ggplot() +
+  borders("world", colour = "gray85", fill = "gray80") +
+  theme_map() 
+
+map <- world +
+  geom_point(aes(x = Longitude, y = Latitude),
+             data = tdor, 
+             colour = 'purple', alpha = .2) +
+  ggtitle("Map of deaths (2006-2018)")
+
+map
+```
+
+
+### Code to animate 2018 data
+Animate by name 
+```{r world_map_animation, eval = FALSE}
+if (anim){
+d18 <- filter(tdor, Year == 2018)
+
+map_anim_name <- world +
+  geom_point(aes(x = Longitude, y = Latitude),
+             data = d18, 
+             colour = 'red', alpha = .5) +
+  labs(title = paste('{closest_state}', "died here")) +
+  transition_states(
+    Name,
+    transition_length = 1,
+    state_length = 1) + 
+  shadow_mark()
+
+# to get full animation...
+animate(map_anim_name, nframes = nrow(d18)*2)
+
+animate(map_anim_name, nframes = nrow(d18)*2) +
+    anim_save(filename = 'world_map_names.gif')
+}
+```
+
+
+### Deaths per month, as a line chart
+```{r deaths_pm}
+tdor %>% 
+  select(Date) %>% 
+  mutate(month=lubridate::floor_date(Date, unit = "1 month")) %>% 
+  count(month) %>%
+  right_join(
+    seq.Date(from = as.Date("2006-10-01"), to=as.Date("2018-09-01"), , by="month") %>% 
+  as_tibble() %>% 
+  select(month=value)
+  ) %>% 
+  ggplot()+
+  aes(x=month, y=n)+
+  geom_line()
+```
