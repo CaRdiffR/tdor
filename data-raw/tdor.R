@@ -9,7 +9,7 @@ library("usethis")
 # Get Data ----
 # Data sourced from https://bitbucket.org/annajayne/tdor_data/downloads/, unzipped and the contents of the data folder placed in data-raw
 
-## data corrsponding to commit: 465ea2b
+## data corrsponding to commit: 4ef244b
 files <- list.files("./data-raw/tdor_data",
                     "*.csv$",
                     recursive = TRUE,
@@ -37,10 +37,7 @@ col_types <- cols_only(
   Photo = col_character(),
   `Photo source` = col_character(),
   Date = col_character(),
-  `Date of death` = col_character(),  # 2019_03 only
   `Source ref` = col_character(),
-  `Source Ref` = col_character(), # old variant
-  `TGEU ref` = col_character(), # old variant
   Location = col_character(),
   `State/Province` = col_character(),
   Country = col_character(),
@@ -60,11 +57,6 @@ tdor <- files %>%
   select(!!names(col_types$cols)) %>%
   # fix known data issues
   filter(!is.na(Name)) %>% # empty row with one "`" in cause of death column
-  mutate(Date = if_else(!is.na(`Date of death`), `Date of death`, Date),
-         `Source ref` = if_else(!is.na(`Source Ref`), `Source Ref`,
-                                if_else(!is.na(`TGEU ref`), `TGEU ref`,
-                                        `Source ref`))) %>%
-  select(-`Source Ref`, -`TGEU ref`, -`Date of death`) %>%
   # sometimes age is a range; separate into min and max
   separate(Age, into = c("Age_min", "Age_max"), sep = "-", remove = FALSE) %>%
   mutate(Age_min = suppressWarnings(ifelse(!is.na(as.numeric(Age_min)),
