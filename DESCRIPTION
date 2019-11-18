@@ -21,6 +21,7 @@ Suggests:
     gganimate,
     ggplot2,
     ggthemes,
+    knitr,
     lubridate,
     maps,
     rmarkdown

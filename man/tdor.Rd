@@ -38,7 +38,8 @@ tdor
 }
 \description{
 This data set contains information on killings and suicides of transgender
-people, collected for the Transgender Day of Remembrance.
+people, collected for the Transgender Day of Remembrance. It includes
+records from 1970 to 2019.
 }
 \details{
 The Transgender Day of Remembrance (TDoR) is held annually on November 20.

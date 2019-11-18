@@ -1,7 +1,8 @@
 #' Transgender Day of Remembrance Data
 #'
 #' This data set contains information on killings and suicides of transgender
-#' people, collected for the Transgender Day of Remembrance.
+#' people, collected for the Transgender Day of Remembrance. It includes
+#' records from 1970 to 2019.
 #'
 #' The Transgender Day of Remembrance (TDoR) is held annually on November 20.
 #' On this day, people memorialise those who have been murdered or lost to
