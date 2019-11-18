@@ -4,7 +4,7 @@
 # tdor
 
 **tdor** provides data on killings and suicides of transgender people,
-as memorialized in the Transgender Day of Remembrance 2007-2018.
+as memorialized in the Transgender Day of Remembrance. The dataset includes records from 1970 to 2019.
 
 ## Installation
 
