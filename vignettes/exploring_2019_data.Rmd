@@ -1,7 +1,7 @@
 ---
 title: "Explore the 2019 TDoR data"
 author: "Paul Brennan"
-date: "15/11/2019"
+date: "18/11/2019"
 output: html_document
 vignette: >
   %\VignetteIndexEntry{Exploring 2019 TDoR Data}
@@ -28,14 +28,17 @@ library(lubridate)
 ```
 
 ## Some code and graphs to explore the 2019 data
-The TDoR census date goes from 1st of Oct 2018 to 30th of Sep 2019. 
+
+The TDoR 2019 period goes from 1st of Oct 2018 to 30th of Sep 2019. The 
+relevant records can be obtained using the `TDoR` variable.
 
 How many deaths have occured in this time?
 ```{r deaths_during_2019, warning=FALSE}
-start <- '2018-10-01'
-end <- '2019-09-30'
+year <- 2019
+start <- make_date(year, 10, 1)
+end <- make_date(year, 9, 30)
 tdor %>% 
-  filter(Date > as.Date(start) & Date < as.Date(end)) -> tdor_subset
+  filter(TDoR == year) -> tdor_subset
 ```
 
 There were **`r nrow(tdor_subset)`** deaths reported between `r start` and `r end`. 
