@@ -42,15 +42,15 @@ In some cases there is ambiguity over the age, so we have a minimum and a maximu
 
 ```{r deaths_by_age, warning=FALSE}
 tdor %>% 
-  filter(Age_min > 0 & Age_max > 0) %>%
-  ggplot(aes(x = (Age_min + Age_max)/2)) + 
+  filter(`Age min` > 0 & `Age max` > 0) %>%
+  ggplot(aes(x = (`Age min` + `Age max`)/2)) + 
   geom_bar() +
   ggtitle("Deaths by age") +
   labs(y = "Deaths")
 
 tdor %>% 
-  filter(Age_min > 0 & Age_max > 0) %>%
-  ggplot(aes(x = (Age_min + Age_max)/2)) +
+  filter(`Age min` > 0 & `Age max` > 0) %>%
+  ggplot(aes(x = (`Age min` + `Age max`)/2)) +
   geom_histogram(binwidth = 5) +
   ggtitle("Deaths by age") +
   labs(y = "Deaths")

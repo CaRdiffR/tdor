@@ -10,8 +10,8 @@
     \item{Age}{Age (character), typically age in years, but may also be
     a range (if reports are inconsistent), or an approximation (e.g.
     "Approx. 30" or "Under 35").}
-    \item{Age_min}{Minium age (numeric) if this can be defined from Age.}
-    \item{Age_max}{Maxium age (numeric) if this can be defined from Age.}
+    \item{Age min}{Minium age (numeric) if this can be defined from Age.}
+    \item{Age max}{Maxium age (numeric) if this can be defined from Age.}
     \item{Photo source}{URL where photo was obtained from for
     tdor.translivesmatter.info website.}
     \item{Date}{Date of death.}
@@ -23,6 +23,7 @@
     \item{State/Province}{The state or province. If `NA`, the state/province
     is part of `Location`.}
     \item{Country}{Country where death occurred.}
+    \item{Country code}{ISO-3 country code (three letter code).}
     \item{Latitude}{Latitude of location.}
     \item{Longitude}{Longitude of location.}
     \item{Cause of death}{Category of cause of death.}

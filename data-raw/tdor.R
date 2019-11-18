@@ -1,3 +1,4 @@
+library("countrycode")
 library("dplyr")
 library("janitor")
 library("lubridate")
@@ -5,6 +6,7 @@ library("purrr")
 library("readr")
 library("tidyr")
 library("usethis")
+library("WDI")
 
 # Get Data ----
 # Data sourced from https://bitbucket.org/annajayne/tdor_data/downloads/, unzipped and the contents of the data folder placed in data-raw
@@ -68,12 +70,12 @@ tdor <- files %>%
 
 tdor <- tdor %>%
   # sometimes age is a range; separate into min and max
-  separate(Age, into = c("Age_min", "Age_max"), sep = "-", remove = FALSE) %>%
-  mutate(Age_min = suppressWarnings(ifelse(!is.na(as.numeric(Age_min)),
-                                           as.numeric(Age_min),
+  separate(Age, into = c("Age min", "Age max"), sep = "-", remove = FALSE) %>%
+  mutate(`Age min` = suppressWarnings(ifelse(!is.na(as.numeric(`Age min`)),
+                                           as.numeric(`Age min`),
                                            as.numeric(sub("(Approx. )",
                                                           "", Age)))),
-         Age_max = suppressWarnings(ifelse(!is.na(Age_max), as.numeric(Age_max),
+         `Age max` = suppressWarnings(ifelse(!is.na(`Age max`), as.numeric(`Age max`),
                                            as.numeric(sub("(Approx. |Under )",
                                                           "", Age))))) %>%
   # simple conversion to TDOR period no longer works
@@ -97,7 +99,14 @@ tdor <- tdor %>%
              # 1st October to 30th September from now on
              TRUE ~ ifelse(Month %in% 1:9, Year, Year + 1)
            )) %>%
-  select(Name:Date, Month, Year, TDoR, everything(), -Photo)
+  # country code
+  mutate(`Country code` = countrycode(Country, "country.name", "iso3c")) %>%
+  # logical order
+  select(Name, Age, `Age min`, `Age max`,
+         Date, Month, Year, TDoR,
+         Location, `State/Province`, Country, `Country code`, Latitude, Longitude,
+         `Cause of death`, Description,
+         `Photo source`, `Source ref`, Tweet, Permalink)
 
 use_data(tdor, overwrite = TRUE)
 
