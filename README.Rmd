@@ -12,7 +12,9 @@ knitr::opts_chunk$set(
   out.width = "100%"
 )
 ```
-
+  <!-- badges: start -->
+  [![Travis build status](https://travis-ci.org/CaRdiffR/tdor.svg?branch=master)](https://travis-ci.org/CaRdiffR/tdor)
+  <!-- badges: end -->
 # tdor
 
 **tdor** provides data on killings and suicides of transgender people, as 
