@@ -15,7 +15,7 @@ License: CC0
 Encoding: UTF-8
 LazyData: true
 Depends: R (>= 2.10)
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.0
 Suggests: 
     dplyr,
     gganimate,
@@ -24,5 +24,6 @@ Suggests:
     knitr,
     lubridate,
     maps,
-    rmarkdown
+    rmarkdown,
+    stringr
 VignetteBuilder: knitr
