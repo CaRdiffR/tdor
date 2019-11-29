@@ -14,8 +14,8 @@ Description: Data on killings and suicides of trans people recorded for observan
 License: CC0
 Encoding: UTF-8
 LazyData: true
-Depends: R (>= 2.10)
-RoxygenNote: 6.1.1
+Depends: R (>= 2.10), shiny, shinydashboard, leaflet
+RoxygenNote: 7.0.1
 Suggests: 
     dplyr,
     gganimate,
