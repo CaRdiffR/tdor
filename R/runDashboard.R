@@ -4,6 +4,6 @@ runDashboard <- function() {
   if (appDir == "") {
     stop("Could not find example directory. Try re-installing `tdor`.", call. = FALSE)
   }
-  
+  #https://deanattali.com/2015/04/21/r-package-shiny-app/
   shiny::runApp(appDir, display.mode = "normal")
 }
