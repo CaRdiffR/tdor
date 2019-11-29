@@ -1,3 +1,6 @@
+#' Launch Shiny Dashboard
+#' 
+#' \code{runDashboard} launches the Shiny Dashboard displaying the data contained in this package
 #' @export
 runDashboard <- function() {
   appDir <- system.file("shiny-examples", "dashboard_example", package = "tdor")
