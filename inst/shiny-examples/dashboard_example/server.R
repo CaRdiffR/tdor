@@ -61,7 +61,10 @@ server <- function(input, output) {
   })
   
   output$byAge <- renderPlot({
-    tdor %>% 
+    data = tdor
+    names(data)[which(names(data)=="Age min")]="Age_min"
+    names(data)[which(names(data)=="Age max")]="Age_max"
+    data %>% 
       filter(Age_min > 0 & Age_max > 0) %>%
       ggplot(aes(x = (Age_min + Age_max)/2)) + 
       geom_bar() +
@@ -70,7 +73,10 @@ server <- function(input, output) {
   })
   
   output$byAge2<- renderPlot({
-    tdor %>% 
+    data = tdor
+    names(data)[which(names(data)=="Age min")]="Age_min"
+    names(data)[which(names(data)=="Age max")]="Age_max"
+    data %>% 
       filter(Age_min > 0 & Age_max > 0) %>%
       ggplot(aes(x = (Age_min + Age_max)/2)) +
       geom_histogram(binwidth = 5) +
