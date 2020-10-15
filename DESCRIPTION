@@ -7,7 +7,10 @@ Authors@R: c(person("Dave", "Parr",
           comment = c(ORCID = "0000-0002-1539-8547")),
           person("Heather", "Turner", 
           email = "ht@heatherturner.net", role = c("aut"),
-          comment = c(ORCID = "0000-0002-1256-3375")))
+          comment = c(ORCID = "0000-0002-1256-3375")),
+          person("Paul", "Brennan",
+          email = "BrennanP@cardiff.ac.uk", role = c("aut"),
+          comment = c(ORCID = "0000-0001-8792-0499")))
 BugReports: https://github.com/CaRdiffR/tdor/issues          
 Description: Data on killings and suicides of trans people recorded for observance of the Transgender Day of Remembrance, held annually on November 20 <https://en.wikipedia.org/wiki/Transgender_Day_of_Remembrance>.
     The data are collated from reports by Transgender Europe <https://tdor.tgeu.org/> and trans activists worldwide, as published on <https://tdor.translivesmatter.info/>.
